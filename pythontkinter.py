@@ -57,34 +57,103 @@ def open_window():
     button.pack(padx = 30 ,pady = 100)
     top.configure(background='mediumspringgreen')
 
-    #--------we have created checkbuttons in our childwindow to open multiple files ---------
-    #---------- A list to hold the checkbuttons and their associated variables---------
-    buttons = []
+   #we have created a text box ,here our poem will appear
+    T = Text(top, height=10, width=100)
+    T.pack()
+    #blacnk = Button(top, text="",bg="mediumspringgreen").pack(anchor=CENTER)
 
-    def ShowChoice():
-        # Go through the list of checkbuttons and get each button/variable pair
-        for button, var in buttons:
-            # If var.get() is True, the checkbutton was clicked
-            if var.get():
-                # So, we open the file with a context manager
-                with open(os.path.join("/home/kuldeep/poem", button["text"])) as file:
-                    # And print its contents
-                    for line in file:
-                        print(line)
+    def opencrazy():
+        f = open("crazy.txt")
+        # t is a Text widget
+        T.insert(END, f.read())
 
-    for file in os.listdir("/home/kuldeep/poem"):
-        if file.endswith(".txt"):
-            # Create a variable for the following checkbutton
-            var = IntVar()
-            # Create the checkbutton
-            button1 = Checkbutton(top, text=file, variable=var)
-            button1.pack(anchor=W)
-            # Add a tuple of (button, var) to the list buttons
-            buttons.append((button1, var))
-            # (file.read)
+    crazy = Button(top, text="Crazy", fg="black", bg="salmon", font=('Ariel', 10, 'bold'), command=opencrazy).pack(anchor=CENTER)
 
-    submitButton = Button(top, text="Submit",bg = "black",fg = "white",font=('Ariel', 20, 'italic'), command=ShowChoice)
-    submitButton.pack(padx=30,pady=40)
+
+    def openalone():
+        f= open("alone.txt")
+        T.insert(END, f.read())
+
+    alone = Button(top, text="Alone", fg="black", bg="red", font=('Ariel', 10, 'bold'), command=openalone).pack(anchor=CENTER)
+
+
+
+    def opennight():
+        f= open("night.txt")
+        T.insert(END,f.read())
+
+    night = Button(top, text="night", fg="black", bg="yellow", font=('Ariel', 10, 'bold'), command=opennight).pack(anchor=CENTER)
+
+
+    def opengirl():
+        f = open("alone.txt")
+        T.insert(END,f.read())
+
+    girl = Button(top, text="girl", fg="black", bg="brown3", font=('Ariel', 10, 'bold'), command=opengirl).pack(anchor=CENTER)
+
+
+
+    def opentrust():
+        f = open("trust.txt")
+        T.insert(END,f.read())
+
+    trust = Button(top, text="trust", fg="black", bg="orange2", font=('Ariel', 10, 'bold'), command=opentrust).pack(anchor=CENTER)
+
+    def opennature():
+        f= open("nature.txt")
+        T.insert(END,f.read())
+
+    nature = Button(top, text="nature", fg="black", bg="light goldenrod", font=('Ariel', 10, 'bold'), command=opennature).pack(anchor=CENTER)
+
+    def openmoney():
+        f = open("money.txt")
+        T.insert(END,f.read())
+
+    money = Button(top, text="money", fg="black", bg="SteelBlue2", font=('Ariel', 10, 'bold'), command=openmoney).pack(anchor=CENTER)
+
+
+    def openmemory():
+        f = open("memory.txt")
+        T.insert(END ,f.read())
+
+    memory = Button(top, text="memory", fg="black", bg="light sea green", font=('Ariel', 10, 'bold'), command=openmemory).pack(anchor=CENTER)
+
+
+    def openkiss():
+        f = open("kiss.txt")
+        T.insert(END,f.read())
+
+    kiss = Button(top, text="kiss", fg="black", bg="dark slate gray", font=('Ariel', 10, 'bold'), command=openkiss).pack(anchor=CENTER)
+
+
+    def openhope():
+        f = open("hope.txt")
+        T.insert(END,f.read())
+
+    hope = Button(top,text="hope",fg ="black",bg="light coral",font=('Ariel',10,'bold'),command = openhope).pack(anchor=CENTER)
+
+
+    def openjoy():
+        f = open("joy.txt")
+        T.insert(END,f.read())
+
+    joy = Button(top,text = "joy",fg = "black",bg = "dark khaki",font=('Ariel',10,'bold'),command=openjoy).pack(anchor=CENTER)
+
+
+
+    def openfuture():
+        f = open("future.txt")
+        T.insert(END,f.read())
+
+    future = Button(top,text ="future",fg="black",bg="pink",font=('Ariel',10,'bold'),command=openfuture).pack(anchor=CENTER)
+
+
+    def openfriend():
+        f = open("friend.txt")
+        T.insert(END,f.read())
+
+    friend = Button(top,text="friend",fg="black",bg="orange",font=('Ariel',10,'bold'),command=openfriend).pack(anchor=CENTER)
+
 
 
 
