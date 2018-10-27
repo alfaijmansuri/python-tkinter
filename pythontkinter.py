@@ -1,162 +1,71 @@
 from tkinter import *
-import os
+import os #The functions that the OS module provides allows you to interface with the underlying operating system that Python is running on
+import glob  #The glob module finds all the pathnames matching a specified pattern
+
+HEADING_FONT = ('Comic Sans MS', 40, 'bold')
+SUBHEADING_FONT = ('Comic Sans MS', 25, 'bold')
+BUTTON_FONT = ('Ariel', 20, 'italic')
+PARAGRAPH_FONT = ('Times new roman', 12, 'bold')
+
+#defining main window and using Label and Button widget to make buttons and labels in our main window
+#setting command to option_window in our Button to jump to our next window
+def main():
+    window = Tk()
+    window.geometry("1800x1800+120+120")
+    Label(text="Python", bg="black", fg="white", font=HEADING_FONT).pack()
+    Label(text="WELCOME TO TKINTER GUI BY ALFAIJ MANSURI",bg="black", fg="white", font=SUBHEADING_FONT).pack()
+    Label(text="here we'll show you the poems of your fav. keywords", bg="black", fg="white", font=SUBHEADING_FONT).pack()
+    Button(text="NEXT", bg="black", fg="white", font=BUTTON_FONT,command=lambda: option_window(window)).pack()
+    Label(text="click NEXT for next page", bg="black", fg="white", font=PARAGRAPH_FONT).pack()
+    window.configure(background='mediumspringgreen')
 
 
-def close1():
-    window.withdraw()
-    #second---------now this fuction will and call the func. open_window() which will open a new window and we also created--------
-        # -----------close1() function which will hide our main window as we open our parent window----------
+#defining a func. which automatically destroys the window when user close the window forcefully
+    def on_closing():
+        window.destroy()
 
-def multi():
-    open_window()
-    close1()
+    window.protocol("WM_DELETE_WINDOW", on_closing)
+    window.mainloop()
 
-
-#first-------we have created a parent window and we linked this window to child window with the help of  button4 with a fuction as command -----------
-window = Tk()
-
-button1 = Button(text="Python", bg="black", fg="white",font=('Comic Sans MS', 40, 'overstrike'))
-button1.pack()
-button1.place(relx=.5, rely=.2, anchor="c")
-
-
-button2 = Button(text="WELCOME TO TKINTER GUI BY ALFAIJ MANSURI", bg="black", fg="white",font=('Ariel', 20, 'italic'))
-button2.pack()
-button2.place(relx=.5, rely=.4, anchor="c")
-
-button3 = Button(text="here we'll show you the poems of your fav. keywords", bg="black", fg="white",font=('Comic Sans MS', 20, 'italic'))
-button3.pack()
-button3.place(relx=.5, rely=.5, anchor="c")
-
-
-
-button4 = Button(text="NEXT", bg="black", fg="white", font=('Ariel', 20, 'italic'), command = multi)
-button4.pack()
-button4.place(relx=.5, rely=.73, anchor="c")
-
-
-button5 = Button(text="click NEXT for next page", bg="black", fg="white", font=('Times new roman', 12, 'bold'))
-button5.pack()
-button5.place(relx=.5, rely=0.9, anchor="c")
-
-
-window.geometry("1800x1800+120+120")
-window.configure(background='mediumspringgreen')
-
-
-
-
-#-----------third -  we have created a new window that is child window ----------------------
-
-def open_window():
-    top = Toplevel()
-    top.title("Top window")
-    top.geometry("1800x1800+120+120")
-    button = Button(top,text = " Choose your Favourite keywords and press sumit ",bg="black", fg="white",font=('Comic Sans MS', 40, 'underline'))
-    button.place(relx=.5, rely=.2, anchor="c")
-    button.pack(padx = 30 ,pady = 100)
+def option_window(prev):
+    prev.withdraw()    #using prev.withdraw() we hides our previous window i.e main window when our new window in opened
+    top = Toplevel()   #creating a new window using Toplevel()
+    top.geometry("1800x1800+120+120") #setting windows geometry same as top window so that it opens in same size as main window
+    top.title("Top window")   #defining title of window
+    Label(top, text=" Choose your Favourite keywords and press submit ",bg="black", fg="white", font=SUBHEADING_FONT).pack()
     top.configure(background='mediumspringgreen')
 
-   #we have created a text box ,here our poem will appear
-    T = Text(top, height=10, width=100)
-    T.pack()
-    #blacnk = Button(top, text="",bg="mediumspringgreen").pack(anchor=CENTER)
+    states = {}
+    file_paths = glob.glob('textfiles/*.txt') #This glob module finds all the pathnames which ends with .txt in our desired folder
 
-    def opencrazy():
-        f = open("crazy.txt")
-        # t is a Text widget
-        T.insert(END, f.read())
+    def submit(context):
+        final_list = []
+        for st in states.keys():#checking states of keys if the state of key is '1' i.e ON then it will append our file in the final list
+                if states[st].get() == 1:
+                    final_list.append(st)
+        context.withdraw() #it will hide our top level window when our next top level window will open
+        poem_window(final_list) # we are calling our poem_window in which we will show our text files which are been selected by our user
 
-    crazy = Button(top, text="Crazy", fg="black", bg="salmon", font=('Ariel', 10, 'bold'), command=opencrazy).pack(anchor=CENTER)
-
-
-    def openalone():
-        f= open("alone.txt")
-        T.insert(END, f.read())
-
-    alone = Button(top, text="Alone", fg="black", bg="red", font=('Ariel', 10, 'bold'), command=openalone).pack(anchor=CENTER)
+    for filepath in file_paths:
+        states[filepath] = IntVar()  #The control variable that tracks the current state of the checkbutton. i.e ON or OFF
+        Checkbutton(top, text=filepath[10:-4], variable=states[filepath]).pack() #making checkbutton same name as our file name
+    Button(top, text="Submit", command=lambda: submit(top)).pack() #making submit button and settingn command = submit which will call the submit(context)
+                                                                #funtion and then sumit function will append all the files which has ON value .
 
 
-
-    def opennight():
-        f= open("night.txt")
-        T.insert(END,f.read())
-
-    night = Button(top, text="night", fg="black", bg="yellow", font=('Ariel', 10, 'bold'), command=opennight).pack(anchor=CENTER)
-
-
-    def opengirl():
-        f = open("alone.txt")
-        T.insert(END,f.read())
-
-    girl = Button(top, text="girl", fg="black", bg="brown3", font=('Ariel', 10, 'bold'), command=opengirl).pack(anchor=CENTER)
-
+def poem_window(files): #definig funtion to show our poems
+    top = Toplevel() # making a new window which will open when above submit button is clicked
+    top.geometry("1800x1800+120+120")
+    top.title(','.join(map(lambda x: x[10:-4], files)))  #setting the title of our top level same as the check butttons name  eselcted
+    Label(top, text="The Poem",bg="black", fg="white", font=HEADING_FONT)
+    top.configure(background='mediumspringgreen')
+    t = Text(top, font=PARAGRAPH_FONT) #making a text box in our top level in which our poems will appear
+    for file in files:  #opening the selected files in read mode and then inserting them them into textbox
+        f = open(file, 'r')
+        t.insert(END, f.read())
+        f.close()
+        t.pack()
 
 
-    def opentrust():
-        f = open("trust.txt")
-        T.insert(END,f.read())
-
-    trust = Button(top, text="trust", fg="black", bg="orange2", font=('Ariel', 10, 'bold'), command=opentrust).pack(anchor=CENTER)
-
-    def opennature():
-        f= open("nature.txt")
-        T.insert(END,f.read())
-
-    nature = Button(top, text="nature", fg="black", bg="light goldenrod", font=('Ariel', 10, 'bold'), command=opennature).pack(anchor=CENTER)
-
-    def openmoney():
-        f = open("money.txt")
-        T.insert(END,f.read())
-
-    money = Button(top, text="money", fg="black", bg="SteelBlue2", font=('Ariel', 10, 'bold'), command=openmoney).pack(anchor=CENTER)
-
-
-    def openmemory():
-        f = open("memory.txt")
-        T.insert(END ,f.read())
-
-    memory = Button(top, text="memory", fg="black", bg="light sea green", font=('Ariel', 10, 'bold'), command=openmemory).pack(anchor=CENTER)
-
-
-    def openkiss():
-        f = open("kiss.txt")
-        T.insert(END,f.read())
-
-    kiss = Button(top, text="kiss", fg="black", bg="dark slate gray", font=('Ariel', 10, 'bold'), command=openkiss).pack(anchor=CENTER)
-
-
-    def openhope():
-        f = open("hope.txt")
-        T.insert(END,f.read())
-
-    hope = Button(top,text="hope",fg ="black",bg="light coral",font=('Ariel',10,'bold'),command = openhope).pack(anchor=CENTER)
-
-
-    def openjoy():
-        f = open("joy.txt")
-        T.insert(END,f.read())
-
-    joy = Button(top,text = "joy",fg = "black",bg = "dark khaki",font=('Ariel',10,'bold'),command=openjoy).pack(anchor=CENTER)
-
-
-
-    def openfuture():
-        f = open("future.txt")
-        T.insert(END,f.read())
-
-    future = Button(top,text ="future",fg="black",bg="pink",font=('Ariel',10,'bold'),command=openfuture).pack(anchor=CENTER)
-
-
-    def openfriend():
-        f = open("friend.txt")
-        T.insert(END,f.read())
-
-    friend = Button(top,text="friend",fg="black",bg="orange",font=('Ariel',10,'bold'),command=openfriend).pack(anchor=CENTER)
-
-
-
-
-window.mainloop()
-
-
+if __name__ == '__main__':
+    main()
